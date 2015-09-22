@@ -44,6 +44,10 @@ session_exists() {
 	tmux has-session -t "$SESSION_NAME" >/dev/null 2>&1
 }
 
+window_exists() {
+        tmux list-windows -t "$SESSION_NAME" -F "#{window_name}" 2>&1 | grep --silent "^$WINDOW_NAME\$"
+}
+
 switch_to_session() {
 	local session_name="$1"
 	tmux switch-client -t "$session_name"

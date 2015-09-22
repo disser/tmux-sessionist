@@ -5,6 +5,9 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 default_key_bindings_goto="g"
 tmux_option_goto="@sessionist-goto"
 
+default_key_bindings_goto_window="W"
+tmux_option_goto_window="@sessionist-goto-window"
+
 default_key_bindings_alternate="S"
 tmux_option_alternate="@sessionist-alternate"
 
@@ -25,6 +28,14 @@ set_goto_session_bindings() {
 	local key
 	for key in $key_bindings; do
 		tmux bind "$key" run "$CURRENT_DIR/scripts/goto_session.sh"
+	done
+}
+
+set_goto_window_bindings() {
+	local key_bindings=$(get_tmux_option "$tmux_option_goto_window" "$default_key_bindings_goto_window")
+	local key
+	for key in $key_bindings; do
+		tmux bind "$key" run "$CURRENT_DIR/scripts/goto_window.sh"
 	done
 }
 
@@ -66,6 +77,7 @@ set_kill_session_binding() {
 
 main() {
 	set_goto_session_bindings
+	set_goto_window_bindings
 	set_alternate_session_binding
 	set_new_session_binding
 	set_promote_pane_binding
